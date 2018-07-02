@@ -1,0 +1,19 @@
+{
+  "name": "mern_login_system",
+  "version": "1.0.0",
+  "description": "login system that uses the MERN stack",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/log1NVolcom/MERN-login-system.git"
+  },
+  "author": "Joao Rego",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/log1NVolcom/MERN-login-system/issues"
+  },
+  "homepage": "https://github.com/log1NVolcom/MERN-login-system#readme"
+}
