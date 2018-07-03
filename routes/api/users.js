@@ -1,44 +1,83 @@
 const express = require('express');
 const router = express.Router();
-
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const config = require('../../config/keys');
 //Item Model
 const User = require('../../models/User');
 
-// @route GET api/users
-//@desc GET All users
-//@acess Public
-router.get('/', (req, res) => {
-    User.find()
-        .sort({
-            username: -1
-        })
-        .then(users => res.json(users));
-});
-
-// @route POST api/users
-//@desc Create A User
-//@acess Public
-router.post('/', (req, res) => {
-    const newUser = new User({
+router.post('/register', (req, res, next) => {
+    let newUser = new User({
+        name: req.body.name,
         username: req.body.username,
-        password: req.body.password,
         email: req.body.email,
+        password: req.body.password,
+    });
+    User.addUser(newUser, (err, user) => {
+        if (err) {
+            res.json({
+                sucess: false,
+                msg: 'Failed do register user'
+            });
+        } else {
+            res.json({
+                sucess: true,
+                msg: 'User registered'
+            });
+        }
     });
 
-    newUser.save().then(user => res.json(user));
+
 });
 
-// @route DELETE api/items/:id
-//@desc Delete A User
-//@acess Public
-router.delete('/:id', (req, res) => {
-    User.findById(req.params.id)
-        .then(user => user.remove().then(() => res.json({
-            sucess: true
-        })))
-        .catch(err => res.status(404).json({
-            sucess: false
-        }));
+router.post('/authenticate', (req, res, next) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    User.getUserByUsername(username, (err, user) => {
+        if (err) throw err;
+
+        if (!user) {
+            return res.json({
+                sucess: false,
+                msg: 'User not found'
+            });
+        }
+
+        User.comparePassword(password, user.password, (err, isMatch) => {
+            if (err) throw err;
+
+            if (isMatch) {
+                const token = jwt.sign(user.toJSON(), config.secret, {
+                    expiresIn: 604800
+                });
+
+                res.json({
+                    sucess: true,
+                    token: 'Jwt ' + token,
+                    user: {
+                        id: user._id,
+                        name: user.name,
+                        username: user.username,
+                        email: user.email,
+                    }
+                });
+            } else {
+                return res.json({
+                    sucess: false,
+                    msg: 'Wrong password!'
+                });
+            }
+        });
+
+    });
 });
 
+router.get('/profile', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
+    res.json({
+        user: req.user
+    });
+});
 module.exports = router;
