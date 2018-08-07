@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { login } from "../actions/auth";
 
-
 class LoginForm extends Component {
   state = {
     data: {
@@ -21,29 +20,14 @@ class LoginForm extends Component {
     this.setState({
       data: { ...this.state.data, [e.target.name]: e.target.value }
     });
-  async getData() {
-    try {
-      await this.props.login(this.state.data);
 
-      return await localStorage.getItem("payload");
-    } catch (error) {
-      console.log(error);
-    }
-  }
   onSubmit = e => {
-    e.preventDefault();
-
     const errors = this.validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       this.setState({ isloading: true });
-
-       this.getData().then(res => {
-		if(res)
-			this.setState({ err: res });
-		});;
-		
-    
+      this.props.login(this.state.data);
+      console.log("dps do login");
 
       this.setState({ isloading: false });
     }
@@ -64,7 +48,7 @@ class LoginForm extends Component {
         {err && (
           <Message negative>
             <Message.Header>Wrong Credentials</Message.Header>
-			 <p>{err}</p>
+            <p>{err}</p>
           </Message>
         )}
         <Form.Field error={!!errors.username}>

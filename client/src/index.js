@@ -1,15 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import registerServiceWorker from "./registerServiceWorker";
-import { BrowserRouter } from "react-router-dom";
-import "semantic-ui-css/semantic.min.css";
+import configureStore from "./configureStore";
+import Root from "./components/Root";
+import { login } from "./actions/auth";
 
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById("root")
-);
-registerServiceWorker();
+const store = configureStore();
+store.dispatch(login);
+ReactDOM.render(<Root store={store} />, document.getElementById("root"));
