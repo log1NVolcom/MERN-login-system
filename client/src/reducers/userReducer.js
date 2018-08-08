@@ -1,29 +1,29 @@
-import { USER_LOGGED_IN, USER_REGISTED, REQUEST_LOGIN } from "../actions/types";
+import {
+  LOGIN_REQUEST,
+  LOGIN_SUCESS,
+  LOGIN_ERROR
+} from "../actions/actionsTypes";
 
 const initialState = {
-  info: {},
+  data: {},
   isloading: false,
   loginSucess: false
 };
-
 export default function(state = initialState, action) {
-  switch (action.type) {
-    case REQUEST_LOGIN:
-      return { ...initialState, isloading: true };
+    switch(action.type){
+        case LOGIN_REQUEST:
+            return {...state, isloading: true};
+        case LOGIN_SUCESS:
+             return{
+                ...state,
+                data: action.payload,
+                loginSucess: true,
+                isloading: false,
+                };
+        case LOGIN_ERROR:
+             return state;
+        default:
+             return state;
+    }
 
-    case USER_LOGGED_IN:
-      return {
-        ...state,
-        info: action.payload,
-        loginSucess: true,
-        isloading: false
-      };
-
-    case USER_REGISTED:
-      return {
-        info: action.payload
-      };
-    default:
-      return state;
-  }
 }
