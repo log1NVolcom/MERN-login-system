@@ -74,7 +74,7 @@ class DashboardPage extends Component {
   render() {
     const {classes} = this.props;
     const {name} = this.state.user;
-    console.log(this.props);
+
     return (
       <div>
         <ProfileNavbar logout={this.onLogout} />

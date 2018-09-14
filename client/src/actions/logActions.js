@@ -41,8 +41,6 @@ export function login(credentials) {
       if (!res) {
         dispatch(setLoginError('Server Error'));
       } else {
-        console.log(res);
-        localStorage.setItem('userToken', res.data.token);
         dispatch(setLoginSuccess(true, res.data.token));
       }
     });
