@@ -1,0 +1,33 @@
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
+
+import LoginPage from './components/Login/LoginPage';
+import HomePage from './components/Home/HomePage';
+import RegisterPage from './components/Register/RegisterPage';
+import DashboardPage from './components/Dashboard/DashboardPage';
+
+const loggedIn = typeof localStorage.getItem('userToken') !== 'undefined';
+const Routes = () => (
+  <Router>
+    <Switch>
+      <Route exact path="/" component={HomePage} />
+      <Route exact path="/Login" component={LoginPage} />
+      <Route exact path="/Register" component={RegisterPage} />
+      <Route
+        exact
+        path="/Dashboard"
+        render={() => (this.loggedIn ? <DashboardPage /> : <Redirect to="/" />)}
+      />
+    </Switch>
+  </Router>
+);
+export default Routes;
+
+//<Route exact path="/Login" component={LoginPage} />
+//<LoginContainer>
+//<LoginContainer/>

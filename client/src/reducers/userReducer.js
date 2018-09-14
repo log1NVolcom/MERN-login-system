@@ -1,29 +1,34 @@
-import {
-  LOGIN_REQUEST,
-  LOGIN_SUCESS,
-  LOGIN_ERROR
-} from "../actions/actionsTypes";
+import { SET_LOGIN_PENDING , SET_LOGIN_SUCCESS , SET_LOGIN_ERROR   } from "../actions/actionsTypes";
 
 const initialState = {
-  data: {},
-  isloading: false,
-  loginSucess: false
-};
-export default function(state = initialState, action) {
-    switch(action.type){
-        case LOGIN_REQUEST:
-            return {...state, isloading: true};
-        case LOGIN_SUCESS:
-             return{
-                ...state,
-                data: action.payload,
-                loginSucess: true,
-                isloading: false,
-                };
-        case LOGIN_ERROR:
-             return state;
-        default:
-             return state;
-    }
+	isLoginSuccess: false,
+	isLoginPending: false,
+	loginError: null,
+	loginData: {} 
 
+};
+
+export default function(state = initialState, action) {
+  switch (action.type) {
+   case SET_LOGIN_PENDING:
+      return { ...state, isLoginPending: action.isLoginPending };
+
+   case SET_LOGIN_SUCCESS:
+     return { ...state,  isLoginSuccess: action.isLoginSuccess, loginData: action.loginData };
+
+    case SET_LOGIN_ERROR:
+     return { ...state,  loginError: action.loginError };
+    default:
+      return state;
+  }
 }
+
+/*info: {
+    sucess: false,
+    token: "",
+    user: {
+      name: localStorage.getItem("SessionUserName"),
+      email: localStorage.getItem("SessionUserEmail"),
+      username: localStorage.getItem("SessionUserUsername")
+    }
+  },*/

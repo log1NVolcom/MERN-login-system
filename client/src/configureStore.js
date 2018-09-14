@@ -1,17 +1,17 @@
-import thunkMiddleware from 'redux-thunk';
-import { createLogger } from 'redux-logger';
-import { createStore, applyMiddleware } from 'redux';
-import reducers from "./reducers";
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
+import {createStore, applyMiddleware} from 'redux';
+import reducers from './reducers';
 
-
-const logger = createLogger();
+const initialState = {
+  User: {
+    loginData: localStorage.getItem('userToken'),
+  },
+};
 
 const store = createStore(
   reducers,
-  applyMiddleware(
-    thunkMiddleware, 
-    logger 
-  )
-)
- 
+  initialState,
+  applyMiddleware(thunk, logger),
+);
 export default store;

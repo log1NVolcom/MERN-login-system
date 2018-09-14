@@ -1,35 +1,52 @@
-import axios from "axios";
-import { LOGIN_REQUEST , LOGIN_SUCESS } from "./actionsTypes";
+import {
+  SET_LOGIN_PENDING,
+  SET_LOGIN_SUCCESS,
+  SET_LOGIN_ERROR,
+} from './actionsTypes';
+import axios from 'axios';
+import history from '../history';
 
-function loginRequest(credentials) {
+//---------Login----------------\\
+
+function setLoginPending(isLoginPending) {
   return {
-    type: LOGIN_REQUEST,
-    credentials
+    type: SET_LOGIN_PENDING,
+    isLoginPending,
   };
 }
 
-function loginData(response) {
+function setLoginSuccess(isLoginSuccess, loginData) {
   return {
-    type: LOGIN_SUCESS,
-    payload: response
+    type: SET_LOGIN_SUCCESS,
+    isLoginSuccess,
+    loginData,
   };
 }
 
-const apicall = async (credentials) =>  {
-  axios
-    .post("/api/users/auth", credentials)
-    .then(res => {return Promise.resolve(res)});
+function setLoginError(loginError) {
+  return {
+    type: SET_LOGIN_ERROR,
+    loginError,
+  };
 }
-
 
 export function login(credentials) {
- return function(dispatch) {
-    dispatch(loginRequest(credentials));
-	
-	return apicall(credentials)
-      .then(res => {loginData(res)});
-   
-	  
-	  
+  return async dispatch => {
+    dispatch(setLoginPending(true));
+    dispatch(setLoginSuccess(false));
+    dispatch(setLoginError(null));
+
+    await axios.post('/api/users/login', credentials).then(res => {
+      dispatch(setLoginPending(false));
+      if (!res) {
+        dispatch(setLoginError('Server Error'));
+      } else {
+        console.log(res);
+        localStorage.setItem('userToken', res.data.token);
+        dispatch(setLoginSuccess(true, res.data.token));
+      }
+    });
   };
 }
+
+//-------------------Logout------------------\\

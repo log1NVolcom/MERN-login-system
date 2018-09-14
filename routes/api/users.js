@@ -28,20 +28,20 @@ router.post("/register", (req, res, next) => {
   });
 });
 
-router.post("/auth", (req, res, next) => {
-  const username = req.body.username;
+router.post("/login", (req, res, next) =>  {
+const username = req.body.username;
   const password = req.body.password;
 
   User.getUserByUsername(username, (err, user) => {
     if (err) throw error;
-
+	
     if (!user) {
       return res.json({
         sucess: false,
         msg: "User not found"
       });
     }
-
+	
     User.comparePassword(password, user.password, (err, isMatch) => {
       if (err) throw err;
 
@@ -49,7 +49,7 @@ router.post("/auth", (req, res, next) => {
         const token = jwt.sign(user.toJSON(), config.secret, {
           expiresIn: 604800
         });
-
+		
         return res.json({
           sucess: true,
           token: "Jwt " + token,
@@ -70,13 +70,14 @@ router.post("/auth", (req, res, next) => {
   });
 });
 
+
 router.get(
   "/profile",
   passport.authenticate("jwt", {
     session: false
   }),
   (req, res, next) => {
-    res.json({
+     res.json({
       user: req.user
     });
   }

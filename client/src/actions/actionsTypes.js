@@ -1,6 +1,3 @@
-
-//login types
-export const LOGIN_REQUEST = "LOGIN_REQUEST";
-export const LOGIN_SUCESS = "LOGIN_SUCESS";
-export const LOGIN_ERROR = "LOGIN_ERROR";
-//
+export const SET_LOGIN_PENDING = 'SET_LOGIN_PENDING';
+export const SET_LOGIN_SUCCESS = 'SET_LOGIN_SUCCESS';
+export const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR';
