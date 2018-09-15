@@ -5,6 +5,8 @@ import LoginPage from './components/Login/LoginPage';
 import HomePage from './components/Home/HomePage';
 import RegisterPage from './components/Register/RegisterPage';
 import DashboardPage from './components/Dashboard/DashboardPage';
+import EditProfilePage from './components/EditProfile/EditProfilePage';
+
 
 const loggedIn = localStorage.getItem('userToken') !== null;
 const enterLogin = localStorage.getItem('userToken') === null;
@@ -24,7 +26,13 @@ const Routes = () => (
         exact
         path="/Dashboard"
         render={() => (loggedIn ? <DashboardPage /> : <Redirect to="/" />)}
-      />
+    />
+ <Route
+        exact
+        path="/EditProfile"
+        render={() => (loggedIn ? <EditProfilePage /> : <Redirect to="/" />)}
+    />
+
     </Switch>
   </Router>
 );

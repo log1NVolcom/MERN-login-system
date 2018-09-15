@@ -27,19 +27,15 @@ export default function(state = initialState, action) {
       return {...state, loginError: action.loginError};
 
     case SET_EDITPROFILE_PENDING:
-      return {...state, isEditProfile: action.isEditProfile};
+      return {...state, isEditProfilePending: action.isEditProfilePending};
+
+    case SET_EDITPROFILE_SUCESS:
+      return {...state, isEditProfileSucess: action.isEditProfileSucess};
+
+    case SET_EDITPROFILE_ERROR:
+      return {...state, editProfileError: action.editProfileError};
 
     default:
       return state;
   }
 }
-
-/*info: {
-    sucess: false,
-    token: "",
-    user: {
-      name: localStorage.getItem("SessionUserName"),
-      email: localStorage.getItem("SessionUserEmail"),
-      username: localStorage.getItem("SessionUserUsername")
-    }
-  },*/
