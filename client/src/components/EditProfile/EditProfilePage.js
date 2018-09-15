@@ -1,60 +1,59 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import img1 from "../components/Images/img1.jpg";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
-import classNames from "classnames";
-import Divider from "@material-ui/core/Divider";
-import ProfileNavbar from "../components/ProfileNavbar";
-import history from "../history";
-import Button from "@material-ui/core/Button";
-import { connect } from "react-redux";
-import { editUser } from "../actions/editProf";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {withStyles} from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import img1 from './Images/img1.jpg';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import Avatar from '@material-ui/core/Avatar';
+import classNames from 'classnames';
+import Divider from '@material-ui/core/Divider';
+import ProfileNavbar from './ProfileNavbar';
+import Button from '@material-ui/core/Button';
+import {connect} from 'react-redux';
+import {editUser} from '../../actions/editProfileActions';
+import axios from 'axios';
 
 const styles = theme => ({
   container: {
-    display: "flex",
-    flexWrap: "wrap"
+    display: 'flex',
+    flexWrap: 'wrap',
   },
   input: {
     marginTop: 10,
-    marginBottom: 2
+    marginBottom: 2,
   },
   avatar: {
-    margin: 5
+    margin: 5,
   },
   bigAvatar: {
     width: 200,
-    height: 200
+    height: 200,
   },
   paper: {},
   description: {
-    marginTop: 30
+    marginTop: 30,
   },
   button: {
-    marginTop: -10
-  }
+    marginTop: -10,
+  },
 });
 
 class EditProfile extends Component {
-
-    constructor(props){
-      state = {
-    user: {
-         },
-    newUser: {
-      name: "",
-      email: "",
-      username: ""
-    }
-     };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {},
+      newUser: {
+        name: '',
+        email: '',
+        username: '',
+      },
+    };
+  }
 
   componentDidMount() {
     const auth = this.props.loginData;
@@ -69,26 +68,28 @@ class EditProfile extends Component {
     });
   }
 
-
   setInputState(event, n) {
     const {
-      target: { value }
+      target: {value},
     } = event;
 
     this.setState({
-      newUser: {...this.state.newUser, [n]: value }
+      newUser: {...this.state.newUser, [n]: value},
     });
-
   }
 
   handleClick(e) {
     e.preventDefault();
-    this.props.editUser(this.state);
-  };
+    this.props.editUser(this.state.newUser);
+  }
 
   render() {
-    const { classes } = this.props;
-    const { name, email, username } = this.state.user;
+    const {classes} = this.props;
+    const {name, email, username} = this.state.user;
+    console.log('STATE: ');
+    console.log(this.state);
+    console.log('PROPS: ');
+    console.log(this.props);
     return (
       <div>
         <ProfileNavbar logout={this.onLogout} />
@@ -114,7 +115,7 @@ class EditProfile extends Component {
                 <Input
                   id="Name"
                   placeholder={name}
-                  onChange={e => this.setInputState(e, "name")}
+                  onChange={e => this.setInputState(e, 'name')}
                 />
               </FormControl>
               <Divider />
@@ -124,7 +125,7 @@ class EditProfile extends Component {
                 <Input
                   id="email"
                   placeholder={email}
-                  onChange={e => this.setInputState(e, "email")}
+                  onChange={e => this.setInputState(e, 'email')}
                 />
               </FormControl>
               <Divider />
@@ -135,7 +136,7 @@ class EditProfile extends Component {
                   id="username"
                   placeholder={username}
                   value={this.state.newUsername}
-                  onChange={e => this.setInputState(e, "username")}
+                  onChange={e => this.setInputState(e, 'username')}
                 />
               </FormControl>
             </Paper>
@@ -146,8 +147,7 @@ class EditProfile extends Component {
               variant="contained"
               color="primary"
               className={classes.button}
-              onClick={this.onClick}
-            >
+              onClick={this.onClick}>
               Save Data
             </Button>
           </Grid>
@@ -157,9 +157,7 @@ class EditProfile extends Component {
   }
 }
 
-
 export default connect(
   null,
-  { editUser }
+  {editUser},
 )(withStyles(styles)(EditProfile));
-

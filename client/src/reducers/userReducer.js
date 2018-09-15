@@ -2,13 +2,16 @@ import {
   SET_LOGIN_PENDING,
   SET_LOGIN_SUCCESS,
   SET_LOGIN_ERROR,
+  SET_EDITPROFILE_PENDING,
+  SET_EDITPROFILE_SUCESS,
+  SET_EDITPROFILE_ERROR,
 } from '../actions/actionsTypes';
 
 const initialState = {
-  isLoginSuccess: false,
+  /* isLoginSuccess: false,
   isLoginPending: false,
   loginError: null,
-  loginData: {},
+  loginData: {},*/
 };
 
 export default function(state = initialState, action) {
@@ -30,7 +33,11 @@ export default function(state = initialState, action) {
       return {...state, isEditProfilePending: action.isEditProfilePending};
 
     case SET_EDITPROFILE_SUCESS:
-      return {...state, isEditProfileSucess: action.isEditProfileSucess};
+      return {
+        ...state,
+        isEditProfileSucess: action.isEditProfileSucess,
+        msg: action.msg,
+      };
 
     case SET_EDITPROFILE_ERROR:
       return {...state, editProfileError: action.editProfileError};
