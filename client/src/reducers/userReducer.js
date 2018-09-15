@@ -1,28 +1,47 @@
-import { USER_LOGGED_IN, USER_REGISTED, REQUEST_LOGIN } from "../actions/types";
+import {
+  SET_LOGIN_PENDING,
+  SET_LOGIN_SUCCESS,
+  SET_LOGIN_ERROR,
+  SET_EDITPROFILE_PENDING,
+  SET_EDITPROFILE_SUCESS,
+  SET_EDITPROFILE_ERROR,
+} from '../actions/actionsTypes';
 
 const initialState = {
-  info: {},
-  isloading: false,
-  loginSucess: false
+  /* isLoginSuccess: false,
+  isLoginPending: false,
+  loginError: null,
+  loginData: {},*/
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case REQUEST_LOGIN:
-      return { ...initialState, isloading: true };
+    case SET_LOGIN_PENDING:
+      return {...state, isLoginPending: action.isLoginPending};
 
-    case USER_LOGGED_IN:
+    case SET_LOGIN_SUCCESS:
       return {
         ...state,
-        info: action.payload,
-        loginSucess: true,
-        isloading: false
+        isLoginSuccess: action.isLoginSuccess,
+        loginData: action.loginData,
       };
 
-    case USER_REGISTED:
+    case SET_LOGIN_ERROR:
+      return {...state, loginError: action.loginError};
+
+    case SET_EDITPROFILE_PENDING:
+      return {...state, isEditProfilePending: action.isEditProfilePending};
+
+    case SET_EDITPROFILE_SUCESS:
       return {
-        info: action.payload
+        ...state,
+        isEditProfileSucess: action.isEditProfileSucess,
+        msg: action.msg,
       };
+
+    case SET_EDITPROFILE_ERROR:
+      return {...state, editProfileError: action.editProfileError};
+
     default:
       return state;
   }

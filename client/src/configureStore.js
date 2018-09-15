@@ -1,27 +1,17 @@
-import { createStore, applyMiddleware } from "redux";
-import rootReducer from "./reducers";
-import { loadState, saveState } from "./localStorage";
-import thunkMiddleware from "redux-thunk";
-import logger from "redux-logger";
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
+import {createStore, applyMiddleware} from 'redux';
+import reducers from './reducers';
 
-const configureStore = () => {
-  const midlewares = [thunkMiddleware, logger];
-  const store = createStore(rootReducer, applyMiddleware(...midlewares));
-
-  return store;
+const initialState = {
+  User: {
+    loginData: localStorage.getItem('userToken'),
+  },
 };
-export default configureStore;
-
-/*const initialState = {};
-
-const middleware = [thunk];
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
 
 const store = createStore(
-  rootReducer,
+  reducers,
   initialState,
-  composeEnhancers(applyMiddleware(...middleware))
+  applyMiddleware(thunk, logger),
 );
-export default store;*/
+export default store;

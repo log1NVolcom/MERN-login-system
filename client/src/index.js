@@ -1,9 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import configureStore from "./configureStore";
-import Root from "./components/Root";
-import { login } from "./actions/auth";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import store from './configureStore';
+import {Provider} from 'react-redux';
+import 'semantic-ui-css/semantic.min.css';
 
-const store = configureStore();
-store.dispatch(login);
-ReactDOM.render(<Root store={store} />, document.getElementById("root"));
+import Routes from './Routes';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Routes />
+  </Provider>,
+  document.getElementById('root'),
+);
