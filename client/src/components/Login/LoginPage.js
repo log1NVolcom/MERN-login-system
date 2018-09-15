@@ -3,7 +3,7 @@ import {login} from '../../actions/logActions';
 import {Form, Button, Message} from 'semantic-ui-react';
 import InlineError from './InlineError';
 import {connect} from 'react-redux';
-import history from '../../history';
+import {withRouter} from 'react-router-dom';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -25,10 +25,6 @@ class LoginPage extends Component {
     });
   }
 
-  finishLogin(data) {
-    localStorage.setItem('userToken', data);
-    history.push('/Dashboard');
-  }
   handleSubmit(e) {
     e.preventDefault();
     const errors = this.validate(this.state.data);
@@ -38,7 +34,8 @@ class LoginPage extends Component {
       this.props.login(credentials).then(() => {
         if (this.props.isLoginSuccess) {
           if (typeof this.props.loginData !== 'undefined') {
-            this.finishLogin(this.props.loginData);
+            localStorage.setItem('userToken', this.props.loginData);
+            this.props.history.go('/Dashboard');
           } else {
             this.setState({err: 'Wrong Username or Password'});
           }
@@ -55,7 +52,7 @@ class LoginPage extends Component {
   };
 
   render() {
-    console.log(localStorage.getItem('userToken'));
+    console.log(this.props);
     const {data, errors, err} = this.state;
     const {isLoginPending} = this.props;
     return (
@@ -111,7 +108,9 @@ const mapDispatchToProps = dispatch => {
     login: data => dispatch(login(data)),
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(LoginPage);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(LoginPage),
+);

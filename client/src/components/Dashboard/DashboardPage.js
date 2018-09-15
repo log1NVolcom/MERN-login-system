@@ -13,7 +13,7 @@ import MenuList from '@material-ui/core/MenuList';
 import grey from '@material-ui/core/colors/grey';
 import Divider from '@material-ui/core/Divider';
 import ProfileNavbar from './ProfileNavbar';
-import history from '../../history';
+import {withRouter} from 'react-router-dom';
 
 const styles = theme => ({
   root: {
@@ -65,16 +65,16 @@ class DashboardPage extends Component {
   }
   onLogout() {
     localStorage.removeItem('userToken');
-    history.push('/');
+    this.props.history.go('/');
   }
   onEditProfile() {
-    history.push('/EditProfile');
+    this.props.history.go('/EditProfile');
   }
 
   render() {
     const {classes} = this.props;
     const {name} = this.state.user;
-
+    console.log(this.props);
     return (
       <div>
         <ProfileNavbar logout={this.onLogout} />
@@ -121,4 +121,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps)(DashboardPage));
+export default withRouter(
+  withStyles(styles)(connect(mapStateToProps)(DashboardPage)),
+);

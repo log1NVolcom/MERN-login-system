@@ -4,7 +4,6 @@ import {
   SET_LOGIN_ERROR,
 } from './actionsTypes';
 import axios from 'axios';
-import history from '../history';
 
 //---------Login----------------\\
 
