@@ -1,27 +1,27 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 
 //Create Schema
 const UserSchema = new Schema({
   name: {
-    type: String
+    type: String,
   },
   username: {
     type: String,
-    require: true
+    require: true,
   },
   password: {
     type: String,
-    require: true
+    require: true,
   },
   email: {
     type: String,
-    require: true
-  }
+    require: true,
+  },
 });
 
-module.exports = User = mongoose.model("User", UserSchema);
+module.exports = User = mongoose.model('User', UserSchema);
 
 module.exports.getUserById = function(id, callback) {
   User.findById(id, callback);
@@ -29,7 +29,7 @@ module.exports.getUserById = function(id, callback) {
 
 module.exports.getUserByUsername = function(username, callback) {
   const query = {
-    username: username
+    username: username,
   };
   User.findOne(query, callback);
 };
@@ -49,4 +49,12 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
     if (err) throw err;
     callback(null, isMatch);
   });
+};
+
+module.exports.updateUserByUsername = function(username, data, callback) {
+  const query = {
+    username: data.user.username,
+  };
+
+  User.findOneAndUpdate(query, data.newUser, {upsert: true}, callback);
 };

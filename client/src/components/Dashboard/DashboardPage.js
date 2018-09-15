@@ -47,6 +47,7 @@ class DashboardPage extends Component {
   constructor(props) {
     super(props);
     this.onLogout = this.onLogout.bind(this);
+    this.onEditProfile = this.onEditProfile.bind(this);
     this.state = {
       user: {},
     };
@@ -68,13 +69,12 @@ class DashboardPage extends Component {
     this.props.history.go('/');
   }
   onEditProfile() {
-    this.props.history.go('/EditProfile');
+    this.props.history.push('/EditProfile');
   }
 
   render() {
     const {classes} = this.props;
     const {name} = this.state.user;
-    console.log(this.props);
     return (
       <div>
         <ProfileNavbar logout={this.onLogout} />

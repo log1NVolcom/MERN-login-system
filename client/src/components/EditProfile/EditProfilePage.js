@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -16,6 +15,8 @@ import Button from '@material-ui/core/Button';
 import {connect} from 'react-redux';
 import {editUser} from '../../actions/editProfileActions';
 import axios from 'axios';
+
+import {withRouter} from 'react-router-dom';
 
 const styles = theme => ({
   container: {
@@ -45,6 +46,10 @@ const styles = theme => ({
 class EditProfile extends Component {
   constructor(props) {
     super(props);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+
+    this.onLogout = this.onLogout.bind(this);
     this.state = {
       user: {},
       newUser: {
@@ -68,28 +73,28 @@ class EditProfile extends Component {
     });
   }
 
-  setInputState(event, n) {
-    const {
-      target: {value},
-    } = event;
-
+  handleChange(e) {
     this.setState({
-      newUser: {...this.state.newUser, [n]: value},
+      newUser: {...this.state.newUser, [e.target.name]: e.target.value},
     });
+  }
+
+  onLogout() {
+    localStorage.removeItem('userToken');
+    this.props.history.go('/');
   }
 
   handleClick(e) {
     e.preventDefault();
-    this.props.editUser(this.state.newUser);
+    this.props.editUser(this.state).then(msg => {
+      this.props.history.push('/Dashboard');
+    });
   }
 
   render() {
     const {classes} = this.props;
-    const {name, email, username} = this.state.user;
-    console.log('STATE: ');
-    console.log(this.state);
-    console.log('PROPS: ');
-    console.log(this.props);
+    const {newname, newemail, newusername} = this.state.newUser;
+    const {name} = this.state.user;
     return (
       <div>
         <ProfileNavbar logout={this.onLogout} />
@@ -114,8 +119,10 @@ class EditProfile extends Component {
                 <InputLabel>Name</InputLabel>
                 <Input
                   id="Name"
-                  placeholder={name}
-                  onChange={e => this.setInputState(e, 'name')}
+                  name="name"
+                  value={newname}
+                  placeholder={newname}
+                  onChange={this.handleChange}
                 />
               </FormControl>
               <Divider />
@@ -124,8 +131,10 @@ class EditProfile extends Component {
                 <InputLabel>email</InputLabel>
                 <Input
                   id="email"
-                  placeholder={email}
-                  onChange={e => this.setInputState(e, 'email')}
+                  name="email"
+                  value={newemail}
+                  placeholder={newemail}
+                  onChange={this.handleChange}
                 />
               </FormControl>
               <Divider />
@@ -134,9 +143,10 @@ class EditProfile extends Component {
                 <InputLabel>username</InputLabel>
                 <Input
                   id="username"
-                  placeholder={username}
-                  value={this.state.newUsername}
-                  onChange={e => this.setInputState(e, 'username')}
+                  name="username"
+                  value={newusername}
+                  placeholder={newusername}
+                  onChange={this.handleChange}
                 />
               </FormControl>
             </Paper>
@@ -147,7 +157,7 @@ class EditProfile extends Component {
               variant="contained"
               color="primary"
               className={classes.button}
-              onClick={this.onClick}>
+              onClick={this.handleClick}>
               Save Data
             </Button>
           </Grid>
@@ -157,7 +167,24 @@ class EditProfile extends Component {
   }
 }
 
-export default connect(
-  null,
-  {editUser},
-)(withStyles(styles)(EditProfile));
+const mapStateToProps = state => {
+  return {
+    isEditProfilePending: state.User.isEditProfilePending,
+    isEditProfileSuccess: state.User.isEditProfileSuccess,
+    editProfileError: state.User.editProfileError,
+    loginData: state.User.loginData,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    editUser: data => dispatch(editUser(data)),
+  };
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(withStyles(styles)(EditProfile)),
+);

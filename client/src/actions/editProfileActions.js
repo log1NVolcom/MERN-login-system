@@ -35,7 +35,7 @@ export function editUser(data) {
     dispatch(setEditProfileSucess(false));
     dispatch(setEditProfileError(null));
     await axios.post('/api/users/editProfile', data).then(res => {
-      dispatch(setEditProfilePending(true));
+      dispatch(setEditProfilePending(false));
       if (!res) {
         dispatch(setEditProfileError('Servor Error'));
       } else {

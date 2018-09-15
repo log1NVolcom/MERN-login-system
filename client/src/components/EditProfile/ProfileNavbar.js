@@ -9,6 +9,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
+import {withRouter} from 'react-router-dom';
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -94,4 +96,4 @@ ProfileNavbar.propTypes = {
   logout: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(ProfileNavbar);
+export default withRouter(withStyles(styles)(ProfileNavbar));
