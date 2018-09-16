@@ -1,6 +1,6 @@
 import {
   SET_EDITPROFILE_PENDING,
-  SET_EDITPROFILE_SUCESS,
+  SET_EDITPROFILE_SUCCESS,
   SET_EDITPROFILE_ERROR,
 } from './actionsTypes';
 import axios from 'axios';
@@ -14,10 +14,10 @@ function setEditProfilePending(isEditProfilePending) {
   };
 }
 
-function setEditProfileSucess(isEditProfileSucess, msg) {
+function setEditProfileSuccess(isEditProfileSuccess, msg) {
   return {
-    type: SET_EDITPROFILE_SUCESS,
-    isEditProfileSucess,
+    type: SET_EDITPROFILE_SUCCESS,
+    isEditProfileSuccess,
     msg,
   };
 }
@@ -32,14 +32,14 @@ function setEditProfileError(editProfileError) {
 export function editUser(data) {
   return async dispatch => {
     dispatch(setEditProfilePending(true));
-    dispatch(setEditProfileSucess(false));
+    dispatch(setEditProfileSuccess(false));
     dispatch(setEditProfileError(null));
     await axios.post('/api/users/editProfile', data).then(res => {
       dispatch(setEditProfilePending(false));
       if (!res) {
         dispatch(setEditProfileError('Servor Error'));
       } else {
-        dispatch(setEditProfileSucess(true, res));
+        dispatch(setEditProfileSuccess(true, res));
       }
     });
   };

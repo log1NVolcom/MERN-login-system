@@ -20,6 +20,8 @@ class LoginPage extends Component {
     };
   }
   handleChange(e) {
+    e.preventDefault();
+
     this.setState({
       data: {...this.state.data, [e.target.name]: e.target.value},
     });
