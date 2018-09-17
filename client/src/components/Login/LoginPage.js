@@ -11,7 +11,6 @@ class LoginPage extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      err: '',
       errors: {},
       data: {
         username: '',
@@ -55,16 +54,16 @@ class LoginPage extends Component {
 
   render() {
     console.log(this.props);
-    const {data, errors, err} = this.state;
-    const {isLoginPending} = this.props;
+    const {data, errors} = this.state;
+    const {isLoginPending, loginError} = this.props;
     return (
       <div>
         <h1>LOGIN PAGE</h1>
         <Form onSubmit={this.handleSubmit} loading={isLoginPending}>
-          {err && (
+          {loginError && (
             <Message negative>
               <Message.Header>Wrong Credentials : </Message.Header>
-              <p>{err}</p>
+              <p>{loginError}</p>
             </Message>
           )}
           <Form.Field error={!!errors.username}>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Button} from 'semantic-ui-react';
+import {Form, Button, Message} from 'semantic-ui-react';
 import InlineError from './InlineError';
 import {connect} from 'react-redux';
 import {register} from '../../actions/registActions';
@@ -21,6 +21,7 @@ class RegisterPage extends Component {
       },
       isLoading: false,
       errors: {},
+      err: '',
     };
   }
 
@@ -40,7 +41,11 @@ class RegisterPage extends Component {
         console.log(store.getState());
         console.log(this.props);
         if (this.props.isRegistSuccess) {
-          this.props.history.push('/Login');
+          if (this.props.msgRegist.data.sucess) {
+            this.props.history.push('/Login');
+          } else {
+            this.setState({err: this.props.msgRegist.data.msg});
+          }
         }
       });
     }
@@ -56,9 +61,16 @@ class RegisterPage extends Component {
   };
 
   render() {
-    const {data, errors, isloading} = this.state;
+    const {data, errors, err, isloading} = this.state;
     return (
       <Form onSubmit={this.onSubmit} loading={isloading}>
+        {err && (
+          <Message negative>
+            <Message.Header>{err} </Message.Header>
+            <p>Username or email already exist</p>
+          </Message>
+        )}
+
         <Form.Field error={!!errors.username}>
           <label>Username</label>
           <input
