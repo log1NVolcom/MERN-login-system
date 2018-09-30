@@ -71,6 +71,9 @@ class DashboardPage extends Component {
   onEditProfile() {
     this.props.history.push('/EditProfile');
   }
+  onAddFriend = () => {
+    this.props.history.push('/AddFriend');
+  };
 
   render() {
     const {classes} = this.props;
@@ -103,7 +106,7 @@ class DashboardPage extends Component {
               <Divider />
               <MenuItem>My account</MenuItem>
               <Divider />
-              <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={this.onAddFriend}>Friends</MenuItem>
             </MenuList>
           </Grid>
         </Grid>
