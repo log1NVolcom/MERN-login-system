@@ -40,7 +40,9 @@ export function login(credentials) {
       if (!res) {
         dispatch(setLoginError('Server Error'));
       } else {
-        dispatch(setLoginSuccess(true, res.data.token));
+        res.data.sucess
+          ? dispatch(setLoginSuccess(true, res.data.token))
+          : dispatch(setLoginError(res.data.msg));
       }
     });
   };

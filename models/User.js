@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const joigoose = require('joigoose')(mongoose);
+const joi = require('joi');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 
@@ -6,20 +8,39 @@ const bcrypt = require('bcryptjs');
 const UserSchema = new Schema({
   name: {
     type: String,
+    require: true,
   },
   username: {
     type: String,
     require: true,
+    unique: true,
   },
   password: {
     type: String,
     require: true,
+    unique: true,
   },
   email: {
     type: String,
     require: true,
+    unique: true,
   },
 });
+
+/*const joiUserSchema = joi.object().keys({
+  name: joi.string().required(),
+  username: joi.string().required(),
+  password: joi.string().required(),
+  email: joi.string().email({minDomainAtoms: 2}),
+});
+
+const
+
+
+const mongooseUserSchema = mongoose.Schema(joigoose.convert(joiUserSchema));*/
+
+//mongooseUserSchema.username.unique = true;
+//mongooseUserSchema.email.unique = true;
 
 module.exports = User = mongoose.model('User', UserSchema);
 
