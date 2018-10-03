@@ -8,6 +8,7 @@ class Home extends Component {
         <h1>HOME PAGE</h1>
         <Link to="/Login"> SingIn </Link>
         <Link to="/Register"> SignUp </Link>
+        <h1>O João Ferreira é PATO!!!!!!!!!!: </h1>
       </div>
     );
   }
