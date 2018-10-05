@@ -3,12 +3,16 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import {addFriend} from '../../actions/addFriendActions';
+import ProfileNavbar from './ProfileNavbar';
+import './styles.css';
 
 class AddFriendPage extends Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onLogout = this.onLogout.bind(this);
+    this.onProfile = this.onProfile.bind(this);
     this.state = {
       user: {
         friends: [],
@@ -30,9 +34,7 @@ class AddFriendPage extends Component {
   }
 
   handleChange(e) {
-    this.setState({
-      newUser: {...this.state.newUser, [e.target.name]: e.target.value},
-    });
+    this.setState({...this.state.newFriend, [e.target.name]: e.target.value});
   }
 
   onLogout() {
@@ -40,10 +42,14 @@ class AddFriendPage extends Component {
     this.props.history.go('/');
   }
 
+  onProfile() {
+    this.props.history.push('/Dashboard');
+  }
+
   handleClick(e) {
     e.preventDefault();
-    this.props.addFriend(this.state.newFriend).then(msg => {
-      this.props.history.push('/Dashboard');
+    this.props.addFriend(this.state).then(msg => {
+      this.props.history.go('/AddFriend');
     });
   }
 
@@ -51,11 +57,26 @@ class AddFriendPage extends Component {
     const {friends} = this.state.user;
     return (
       <div>
-        <div> ADD FRIEND </div>
+        <ProfileNavbar logout={this.onLogout} profile={this.onProfile} />
 
-        {friends.map(elem => (
-          <ul key={elem}> {elem}</ul>
-        ))}
+        <ul className="friendsList">
+          <h2 className="friendTitle"> Friends </h2>
+          {friends.map(elem => (
+            <li key={elem}> {elem}</li>
+          ))}
+        </ul>
+        <form className="addFriendForm" onSubmit={this.handleSubmit}>
+          <label className="addFriendLabel">
+            Username:
+            <input
+              type="text"
+              value={this.state.value}
+              name="newFriend"
+              onChange={this.handleChange}
+            />
+            <button onClick={this.handleClick}>Add Friend</button>
+          </label>
+        </form>
       </div>
     );
   }

@@ -8,6 +8,9 @@ import {
   SET_EDITPROFILE_PENDING,
   SET_EDITPROFILE_SUCCESS,
   SET_EDITPROFILE_ERROR,
+  SET_ADDFRIEND_PENDING,
+  SET_ADDFRIEND_SUCCESS,
+  SET_ADDFRIEND_ERROR,
 } from '../actions/actionsTypes';
 
 const initialState = {
@@ -57,6 +60,19 @@ export default function(state = initialState, action) {
 
     case SET_EDITPROFILE_ERROR:
       return {...state, editProfileError: action.editProfileError};
+
+    case SET_ADDFRIEND_PENDING:
+      return {...state, isAddFriendPending: action.isAddFriendPending};
+
+    case SET_ADDFRIEND_SUCCESS:
+      return {
+        ...state,
+        isAddFriendSuccess: action.isAddFriendSuccess,
+        msg: action.msg,
+      };
+
+    case SET_ADDFRIEND_ERROR:
+      return {...state, addFriendError: action.addFriendError};
 
     default:
       return state;

@@ -100,31 +100,33 @@ router.get(
 );
 
 router.post('/addFriend', (req, res, next) => {
-  User.getUserByUsername(req.body.friend, (err, friend) => {
+  User.getUserByUsername(req.body.newFriend, (err, friend) => {
     if (err) throw error;
-
     if (!friend) {
       return res.json({
         sucess: false,
         msg: 'Friend username not found',
       });
     } else {
-      User.getUserByUsername(req.body.username, (err, user) => {
+      User.getUserByUsername(req.body.user.username, (err, user) => {
         if (err) throw error;
-
         if (!user) {
           return res.json({
             sucess: false,
             msg: 'Authentication BUG',
           });
         } else {
-          if (user.friends.includes(req.body.friend)) {
+          if (user.friends.includes(friend.username)) {
             return res.json({
               sucess: false,
               msg: req.body.friend + ' is already a friend!',
             });
           } else {
-            User.addFriend(req.body, (err, user) => {
+            let data = {
+              username: user.username,
+              friend: friend.username,
+            };
+            User.addFriend(data, (err, user) => {
               if (err) {
                 return res.json({
                   sucess: false,
@@ -132,8 +134,8 @@ router.post('/addFriend', (req, res, next) => {
                 });
               } else {
                 let reverseData = {
-                  username: req.body.friend,
-                  friend: req.body.username,
+                  username: friend.username,
+                  friend: user.username,
                 };
                 User.addFriend(reverseData, (err, reverseUser) => {
                   if (err) {
