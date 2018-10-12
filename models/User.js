@@ -25,6 +25,7 @@ const UserSchema = new Schema({
     require: true,
     unique: true,
   },
+  friends: [String],
 });
 
 /*const joiUserSchema = joi.object().keys({
@@ -77,5 +78,13 @@ module.exports.updateUserByUsername = function(username, data, callback) {
     username: data.user.username,
   };
 
-  User.findOneAndUpdate(query, data.newUser, {upsert: true}, callback);
+  User.findOneAndUpdate(query, data.newUser, callback);
+};
+
+module.exports.addFriend = function(data, callback) {
+  const query = {
+    username: data.username,
+  };
+
+  User.findOneAndUpdate(query, {$push: {friends: data.friend}}, callback);
 };
